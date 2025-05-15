@@ -5,7 +5,7 @@ class AuthRepositoryImpl implements AuthRepository{
 
   final AuthDataSource dataSource;
 
-  AuthRepositoryImpl(AuthDataSource? dataSource): dataSource = dataSource ?? AuthDatasourceImpl();
+  AuthRepositoryImpl({AuthDataSource? dataSource}): dataSource = dataSource ?? AuthDatasourceImpl();
 
   @override
   Future<User> checkAuthStatus(String token) {
