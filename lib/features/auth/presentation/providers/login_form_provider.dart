@@ -1,13 +1,16 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:teslo_shop/features/auth/presentation/providers/auth_provider.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
 
 final loginFormProvider = StateNotifierProvider.autoDispose<LoginFormNotifier, LoginFormState>((ref) {
-  return LoginFormNotifier();
+  final loginUserCallback = ref.watch(authProvider.notifier).login;
+  return LoginFormNotifier(loginUserCallback);
 });
 
 class LoginFormNotifier extends StateNotifier<LoginFormState> {
-  LoginFormNotifier(): super(LoginFormState());
+  final Function(String email, String password) loginUserCallback;
+  LoginFormNotifier(this.loginUserCallback): super(LoginFormState());
 
   onEmailChanged(String value){
     final email = Email.dirty(value);
@@ -28,7 +31,7 @@ class LoginFormNotifier extends StateNotifier<LoginFormState> {
   onFormSubmitted(){
     _touchEveryField();
     if( !state.isValid) return;
-    print(state);
+    loginUserCallback(state.email.value, state.password.value);
   }
 
   _touchEveryField(){
