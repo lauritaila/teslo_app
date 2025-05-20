@@ -18,8 +18,17 @@ class AuthDatasourceImpl implements AuthDataSource {
       final resp = await dio.post('/auth/login', data: {'email': email, 'password': password});
       final user = UserMapper.userJsonToEntity(resp.data);
       return user;
-    } catch (e) {
-      throw WrongCredentialsException();
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomException(e.response?.data['message'] ?? 'Invalid credentials');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomException('No internet connection');
+      }
+      throw Exception(e.message);
+    }
+    catch (e) {
+      throw Exception(e.toString());
     }
   }
 
