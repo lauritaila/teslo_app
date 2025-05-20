@@ -34,8 +34,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   _setLoggedUser(User user) async {
-    state = state.copyWith(authStatus: AuthStatus.authenticated, user: user,
-    );
+    state = state.copyWith(authStatus: AuthStatus.authenticated, user: user, errorMessage: '');
   }
 }
 
