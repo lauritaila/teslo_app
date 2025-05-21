@@ -16,7 +16,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
   final AuthRepository authRepository;
   final KeyValueStorageService keyValueStorageService;
 
-  AuthNotifier(this.authRepository, this.keyValueStorageService) : super(AuthState());
+  AuthNotifier(this.authRepository, this.keyValueStorageService) : super(AuthState()){
+    checkAuthStatus();
+  }
 
   Future<void> login(String email, String password) async {
     try {
@@ -31,6 +33,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   void registerUser(String email, String password, String fullName) async {}
   void checkAuthStatus() async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    if (token == null) logout();
+    try {
+      final user = await authRepository.checkAuthStatus(token!);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout();
+    }
     
   }
 
