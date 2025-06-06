@@ -3,13 +3,15 @@ import 'package:formz/formz.dart';
 import 'package:teslo_shop/config/constant/enviroment.dart';
 import 'package:teslo_shop/features/products/domain/domain.dart';
 import 'package:teslo_shop/features/shared/shared.dart';
+import '../provider.dart';
 
 final productFormProvider = StateNotifierProvider.autoDispose.family<ProductFormNotifier, ProductFormState, Product>((ref, product) {
-  return ProductFormNotifier(product: product,);
+  final createUpdatedCallback = ref.watch(productsRepositoryProvider).createUpdateProducts;
+  return ProductFormNotifier(product: product, onSubmitCallback: createUpdatedCallback);
 });
 
 class ProductFormNotifier extends StateNotifier<ProductFormState> {
-  final void Function(Map<String, dynamic> productLike)? onSubmitCallback;
+  final Future<Product> Function(Map<String, dynamic> productLike)? onSubmitCallback;
 
   ProductFormNotifier({this.onSubmitCallback, required Product product}) : super(ProductFormState(
     id: product.id,
@@ -63,8 +65,13 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
       'tags': state.tags.split(', '),
       'images': state.images.map((image) => image.replaceAll('${Enviroment.apiUrl}files/product/', '')).toList()
     };
-
-    return true;
+    try {
+      await onSubmitCallback!(productLike);
+      return true;
+      
+    } catch (e) {
+      return false;
+    }
   }
 }
 
