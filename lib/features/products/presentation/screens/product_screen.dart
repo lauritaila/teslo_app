@@ -24,25 +24,28 @@ class ProductScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productProvider(productId));
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Producto'),
-        actions: [
-          IconButton(onPressed: () async {
-            if(productState.product == null) return;
-            final result = await ref.read(productFormProvider(productState.product!).notifier).onFormSubmit();
-            if(!context.mounted) return;
-            if(!result) {
-              showSnackbar(context, 'Error al actualizar el producto');
-              return;
-            }
-            showSnackbar(context, 'Producto actualizado correctamente');
-          }, icon: const Icon(Icons.camera_alt_outlined))],
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Producto'),
+          actions: [
+            IconButton(onPressed: () async {
+              if(productState.product == null) return;
+              final result = await ref.read(productFormProvider(productState.product!).notifier).onFormSubmit();
+              if(!context.mounted) return;
+              if(!result) {
+                showSnackbar(context, 'Error al actualizar el producto');
+                return;
+              }
+              showSnackbar(context, 'Producto actualizado correctamente');
+            }, icon: const Icon(Icons.camera_alt_outlined))],
+        ),
+        body: productState.isLoading ? const FullScreenLoader() : _ProductView(product: productState.product!),
+        floatingActionButton: FloatingActionButton(onPressed: () {
+          context.push('product/new');
+        }, child: const Icon(Icons.save_as_outlined)),
       ),
-      body: productState.isLoading ? const FullScreenLoader() : _ProductView(product: productState.product!),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        context.push('product/new');
-      }, child: const Icon(Icons.save_as_outlined)),
     );
   }
 }
@@ -120,7 +123,7 @@ class _ProductInformation extends ConsumerWidget {
           const SizedBox(height: 15 ),
           const Text('Extras'),
 
-          _SizeSelector(selectedSizes: productForm.sizes, onSizesChanged: ref.read(productFormProvider(product).notifier).onSizeChanged,  ),
+          _SizeSelector(selectedSizes: productForm.sizes, onSizesChanged:  ref.read(productFormProvider(product).notifier).onSizeChanged,  ),
           const SizedBox(height: 5 ),
           _GenderSelector( selectedGender: productForm.gender , onGenderChanged: ref.read(productFormProvider(product).notifier).onGenderChanged, ),
           
@@ -182,6 +185,7 @@ class _SizeSelector extends StatelessWidget {
       }).toList(), 
       selected: Set.from( selectedSizes ),
       onSelectionChanged: (newSelection) {
+        FocusScope.of(context).unfocus();
         onSizesChanged(List.from(newSelection));
       },
       multiSelectionEnabled: true,
@@ -219,6 +223,7 @@ class _GenderSelector extends StatelessWidget {
         }).toList(), 
         selected: { selectedGender },
         onSelectionChanged: (newSelection) {
+          FocusScope.of(context).unfocus();
           onGenderChanged(newSelection.first);
         },
       ),
