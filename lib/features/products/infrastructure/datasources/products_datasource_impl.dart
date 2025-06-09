@@ -20,7 +20,7 @@ class ProductsDatasourceImpl extends ProductsDatasource {
       final String productId = productLike['id'] ?? '';
       productLike.remove('id');
       final response = productId.isEmpty
-          ? await dio.post('/post', data: productLike)
+          ? await dio.post('/products', data: productLike)
           : await dio.patch('/products/$productId', data: productLike);
 
       final product = ProductMapper.jsonToEntity(response.data);
