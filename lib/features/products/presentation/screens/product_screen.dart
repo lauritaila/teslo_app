@@ -9,16 +9,33 @@ class ProductScreen extends ConsumerWidget {
   final String productId;
   const ProductScreen({super.key, required this.productId});
 
+  void showSnackbar(BuildContext context, String message) {
+    if (message.isEmpty) return;
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productState = ref.watch(productProvider(productId));
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product'),
+        title: const Text('Producto'),
         actions: [
-          IconButton(onPressed: () {
+          IconButton(onPressed: () async {
             if(productState.product == null) return;
-            ref.read(productFormProvider(productState.product!).notifier).onFormSubmit();
+            final result = await ref.read(productFormProvider(productState.product!).notifier).onFormSubmit();
+            if(!context.mounted) return;
+            if(!result) {
+              showSnackbar(context, 'Error al actualizar el producto');
+              return;
+            }
+            showSnackbar(context, 'Producto actualizado correctamente');
           }, icon: const Icon(Icons.camera_alt_outlined))],
       ),
       body: productState.isLoading ? const FullScreenLoader() : _ProductView(product: productState.product!),
@@ -49,7 +66,7 @@ class _ProductView extends ConsumerWidget {
           ),
     
           const SizedBox( height: 10 ),
-          Center(child: Text( productForm.title.value, style: textStyles.titleSmall )),
+          Center(child: Text( productForm.title.value, style: textStyles.titleSmall, textAlign: TextAlign.center, )),
           const SizedBox( height: 10 ),
           _ProductInformation( product: product ),
           
