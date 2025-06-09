@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:teslo_shop/features/products/domain/entities/product.dart';
 
 import '../../../shared/shared.dart';
@@ -39,7 +40,9 @@ class ProductScreen extends ConsumerWidget {
           }, icon: const Icon(Icons.camera_alt_outlined))],
       ),
       body: productState.isLoading ? const FullScreenLoader() : _ProductView(product: productState.product!),
-      floatingActionButton: FloatingActionButton(onPressed: () {}, child: const Icon(Icons.save_as_outlined)),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        context.push('product/new');
+      }, child: const Icon(Icons.save_as_outlined)),
     );
   }
 }
