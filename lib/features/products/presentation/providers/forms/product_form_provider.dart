@@ -47,6 +47,8 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
   
   void onTagsChanged(String tags) => state = state.copyWith(tags: tags);
 
+  void onImagesChanged(String img) => state = state.copyWith(images: [...state.images, img]);
+
   void _touchedEveryField() => state = state.copyWith(isFormValid: 
   Formz.validate([Title.dirty(state.title.value), Slug.dirty(state.slug.value), Price.dirty(state.price.value), Stock.dirty(state.inStock.value)]));
   
