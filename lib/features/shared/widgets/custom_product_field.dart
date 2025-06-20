@@ -54,14 +54,14 @@ class CustomProductField extends StatelessWidget {
           bottomLeft: isBottomField ? borderRadius : Radius.zero,
           bottomRight: isBottomField ? borderRadius : Radius.zero,
         ),
-        boxShadow: [
-          if (isBottomField)
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.6),
-              blurRadius: 5,
-              offset: const Offset(0,3)
-            )
-        ]
+        // boxShadow: [
+        //   if (isBottomField)
+        //     // BoxShadow(
+        //     //   color: Colors.black.withValues(alpha: 0.6),
+        //     //   blurRadius: 5,
+        //     //   offset: const Offset(0,3)
+        //     // )
+        // ]
       ),
       child: TextFormField(
         onChanged: onChanged,
