@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:teslo_shop/features/auth/presentation/providers/auth_provider.dart';
 
-final AppRouterNotifierProvider = Provider((ref) => AppRouterNotifier(ref.read(authProvider.notifier)));
+final appRouterNotifierProvider = Provider((ref) => AppRouterNotifier(ref.read(authProvider.notifier)));
 
 class AppRouterNotifier extends ChangeNotifier{
   final AuthNotifier _authNotifier; 
