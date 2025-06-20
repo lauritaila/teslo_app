@@ -23,8 +23,9 @@ Please note that some features are still a work in progress:
 - The ability to **delete photos** from an existing product is unavailable.
 
 ## Screenshots
-<img src="screenshots/screenshot1.jpeg" height="350" alt="Screenshot 1" /> 
-<img src="screenshots/screenshot2.jpeg" height="350" alt="Screenshot 2" />
+<img src="screenshots/screenshots1.jpeg" height="350" alt="Screenshot 1" /> 
+<img src="screenshots/screenshots2.jpeg" height="350" alt="Screenshot 2" />
+<img src="screenshots/screenshots3.jpeg" height="350" alt="Screenshot 3" />
 
 ## Backend Setup
 
@@ -39,7 +40,7 @@ This application requires an instance of the TesloShop backend to function. The 
 
 1. **Download the Backend**: Get the necessary files from the official repository.
 
-    [Teslo Backend - Nest RestServer](https://hub.docker.com/repository/docker/klerith/flutter-backend-teslo-shop/general)
+    [Teslo Backend - Nest RestServer](https://github.com/Klerith/flutter-backend-teslo)
 
 2. **Configure Environment**:
 
