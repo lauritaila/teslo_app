@@ -44,7 +44,7 @@ class ProductScreen extends ConsumerWidget {
             IconButton(
                 onPressed: () async {
                   final photoPath =
-                      await CameraGalleryServiceImpl().pickImageFromGallery();
+                      await CameraGalleryServiceImpl().takePictureWithCamera();
                   if (photoPath == null) return;
                   ref
                       .read(productFormProvider(productState.product!).notifier)
