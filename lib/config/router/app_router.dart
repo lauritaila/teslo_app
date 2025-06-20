@@ -6,7 +6,7 @@ import 'package:teslo_shop/features/auth/presentation/providers/auth_provider.da
 import 'package:teslo_shop/features/products/products.dart';
 
 final goRouterProvider = Provider((ref) {
-  final appRouterNotifier = ref.read(AppRouterNotifierProvider);
+  final appRouterNotifier = ref.read(appRouterNotifierProvider);
   return GoRouter(
     initialLocation: '/splash',
     refreshListenable: appRouterNotifier,
