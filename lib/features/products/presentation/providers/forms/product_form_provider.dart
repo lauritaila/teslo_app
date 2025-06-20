@@ -66,7 +66,7 @@ class ProductFormNotifier extends StateNotifier<ProductFormState> {
       'gender': state.gender,
       'description': state.description,
       'tags': state.tags.split(', '),
-      'images': state.images.map((image) => image.replaceAll('${Enviroment.apiUrl}files/product/', '')).toList()
+      'images': state.images.map((image) => image.replaceAll('${Enviroment.apiUrl}/files/product/', '')).toList()
     };
     try {
       return await onSubmitCallback!(productLike);      
